@@ -1,0 +1,28 @@
+spring:
+  mvc:
+    log-resolved-exception: true
+  application:
+    name: kafka-test
+  threads:
+    virtual:
+      enabled: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      allow.auto.create.topics: false
+      session.timeout.ms: 45000
+      health-indicator.timeout-ms: 5000
+      spring.json.use.type.headers: false
+      sasl:
+        jaas:
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username='admin' password='admin-secret';
+        mechanism: PLAIN
+      security.protocol: SASL_PLAINTEXT
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      compression-type: zstd
+      properties:
+        spring.json.add.type.headers: false
+    topics:
+      in: in-topic
